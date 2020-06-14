@@ -1,0 +1,19 @@
+#!/bin/sh
+
+case $1 in
+	start)
+		/usr/bin/hello-start
+		;;
+
+	stop)
+		killall hello-start
+		;;
+
+	restart)
+		$0 stop
+		$0 start
+		;;
+	*)
+		echo "Usage: $0 [start|stop|restart]"
+		;;
+esac

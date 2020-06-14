@@ -1,0 +1,12 @@
+--- before/hello-patch.c	2020-06-14 20:55:31.888000000 +0700
++++ after/hello-patch.c	2020-06-14 20:55:40.255000000 +0700
+@@ -2,7 +2,7 @@
+ 
+ int main(int argc, char **argv)
+ {
+-    printf("Hello word!\n");
++    printf("Hello Van Son!\n");
+ 
+     return 0;
+ }
+\ No newline at end of file

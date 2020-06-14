@@ -47,10 +47,123 @@ Link video [#02 simple layer, custom image and devtool](https://www.youtube.com/
 
     DESCRIPTION = "A small image just containing a calculator"
 
-    IMAGE_INSTALL += "bc"
-    IMAGE_FEATURES += "ssh-server-dropbear"
+    IMAGE_INSTALL += " bc"
+    IMAGE_FEATURES += " ssh-server-dropbear"
   ```
 - 💻 *yocto/poky/build$* `bitbake core-image-live`
 - 💻 *yocto/build$* `runqemu qemuarm core-image-live nographic`
 - 💻 *root@qemuarm:~#* `bc`
   - 📌 Sẽ hiện thông tin gói bc đã thêm trong file `core-image-live`
+
+4. Tạo recipes mẫu:
+- Tạo thư mục **recipes-hello** có cấu trúc như bên dưới:
+    ```
+    meta-yocto-live
+    ├── recipes-core
+    │   └── images
+    │       └── core-image-live.bb
+    └── recipes-hello
+        └── hello
+            ├── hello-0.1
+            │   └── hello.c
+            └── hello_0.1.bb
+    ```
+- File **hello.c** như sau:
+    ```C
+    #include <stdio.h>
+
+    int main(int argc, char **argv)
+    {
+        printf("Hello word, this is \"%s\"\n", argv[0]);
+
+        return 0;
+    }
+    ```
+- File **hello_0.1.bb** như sau:
+    ```C
+    SUMMARY = "bitbake-layers recipe"
+    DESCRIPTION = "Recipe created by bitbake-layers"
+    LICENSE = "MIT"
+    LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
+    TARGET_CC_ARCH += "${LDFLAGS}"
+    SRC_URI = "file://hello.c"
+
+    S = "${WORKDIR}"
+
+    do_compile() {
+            ${CC} hello.c -o hello
+    }
+
+    do_install() {
+            install -d ${D}${bindir}
+            install -m 0755 hello ${D}${bindir}
+    }
+
+    python do_build() {
+        bb.plain("***********************************************");
+        bb.plain("*                                             *");
+        bb.plain("*  Example recipe created by bitbake-layers   *");
+        bb.plain("*                                             *");
+        bb.plain("***********************************************");
+    }
+
+    ```
+- 💻 *yocto$* `vim meta-yocto-live/recipes-core/images/core-image-live.bb`
+  - 📌 Thêm dòng **IMAGE_INSTALL += " hello"** ở cuối. Để thêm *recipes-hello* vừa tạo vào *core-image-live*
+- 💻 *yocto/poky/build$* `bitbake hello`
+- 💻 *yocto/poky/build$* `bitbake core-image-live`
+
+5. Tạo recipes mẫu khi image bắt đầu:
+- Tạo thư mục **recipes-hello-start** có cấu trúc như bên dưới:
+    ```
+    meta-yocto-live
+    └── hello-start
+        ├── hello-start-0.1
+        │   ├── hello-start.c
+        │   └── hello-start-script
+        └── hello-start_0.1.bb
+    ```
+- File **hello.c** như sau:
+    ```C
+    #include <stdio.h>
+
+    int main(int argc, char **argv)
+    {
+        printf("Hello word, this is \"%s\"\n", argv[0]);
+
+        return 0;
+    }
+    ```
+- File **hello_0.1.bb** như sau:
+    ```C
+    SUMMARY = "bitbake-layers recipe"
+    DESCRIPTION = "Recipe created by bitbake-layers"
+    LICENSE = "MIT"
+    LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
+    TARGET_CC_ARCH += "${LDFLAGS}"
+    SRC_URI = "file://hello.c"
+
+    S = "${WORKDIR}"
+
+    do_compile() {
+            ${CC} hello.c -o hello
+    }
+
+    do_install() {
+            install -d ${D}${bindir}
+            install -m 0755 hello ${D}${bindir}
+    }
+
+    python do_build() {
+        bb.plain("***********************************************");
+        bb.plain("*                                             *");
+        bb.plain("*  Example recipe created by bitbake-layers   *");
+        bb.plain("*                                             *");
+        bb.plain("***********************************************");
+    }
+
+    ```
+- 💻 *yocto$* `vim meta-yocto-live/recipes-core/images/core-image-live.bb`
+  - 📌 Thêm dòng **IMAGE_INSTALL += " hello"** ở cuối. Để thêm *recipes-hello* vừa tạo vào *core-image-live*
+- 💻 *yocto/poky/build$* `bitbake hello`
+- 💻 *yocto/poky/build$* `bitbake core-image-live`
