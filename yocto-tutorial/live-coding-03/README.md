@@ -1,0 +1,1 @@
+# Live Coding with Yocto Project #03 package dependencies and splitting

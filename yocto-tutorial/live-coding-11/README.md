@@ -1,0 +1,1 @@
+# Live Coding with Yocto Project #11 Getting started with CC++ development.

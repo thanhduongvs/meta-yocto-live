@@ -1,0 +1,1 @@
+# Live Coding with Yocto Project #12 Project setup and kas

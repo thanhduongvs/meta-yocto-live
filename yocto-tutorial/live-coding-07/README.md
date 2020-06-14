@@ -1,0 +1,1 @@
+# Live Coding with Yocto Project #07 distros, machines, images and local.conf

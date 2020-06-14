@@ -1,0 +1,1 @@
+# Live Coding with Yocto Project #06 kernel handling and development
