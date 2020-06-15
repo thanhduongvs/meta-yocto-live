@@ -97,6 +97,7 @@ Link video [#02 simple layer, custom image and devtool](https://www.youtube.com/
 - 💻 *yocto/poky/build$* `bitbake core-image-live`
 - 💻 *yocto/build$* `runqemu qemuarm core-image-live`
 - 📌 Khi khởi động xong trước khi gõ `root` để đăng nhập, hello-start sẽ được chạy
+  ![hello-start](https://raw.githubusercontent.com/thanhduongvs/meta-yocto-live/yocto-2.6.4/yocto-tutorial/live-coding-02/hello-start.png)
 
 ## 6. Tạo recipes với patch file:
 - Tạo thư mục **recipes-hello-patch** có cấu trúc như bên dưới:
