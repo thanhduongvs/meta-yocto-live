@@ -2,7 +2,7 @@
 
 Link video [#01 download and first build](https://www.youtube.com/watch?v=EfKLrSxA_H8 "Youtube")
 
-1. Tải file source code:
+## 1. Tải file source code:
 - 💻 *$* `sudo apt-get install gawk wget git diffstat unzip texinfo gcc-multilib build-essential chrpath socat libsdl1.2-dev xterm`
   - 📌 Cài đặt các tool để hỗ trợ build yocto
 - 💻 *$* `mkdir yocto`
@@ -31,7 +31,7 @@ Link video [#01 download and first build](https://www.youtube.com/watch?v=EfKLrS
             "
   ```
 
-2. Build yocto:
+## 2. Build yocto:
 - 💻 *yocto$* `source poky/oe-init-build-env build`
   - 📌 thiết lập các biến môi trường
   - 📌 Chỉnh sửa file **yocto/build/conf/local.conf**
@@ -45,7 +45,7 @@ Link video [#01 download and first build](https://www.youtube.com/watch?v=EfKLrS
 - ℹ️ Lệnh `bitbake core-image-minimal` có thể thay thế  2 bước `bitbake core-image-minimal --runall=fetch` và `bitbake -k core-image-minimal`. 
 Nhưng tách ra để khi có lỗi xảy ra, dễ phân biệt lỗi do lúc download package hay lúc build image
 
-3. Chạy máy ảo:
+## 3. Chạy máy ảo:
 - 💻 *yocto/build$* `runqemu qemuarm`
   - ℹ️ Sau đó nhập mật khẩu của máy tính của bạn
   - ℹ️ Để đăng nhập máy ảo gõ `root`

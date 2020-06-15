@@ -2,7 +2,7 @@
 
 Link video [#02 simple layer, custom image and devtool](https://www.youtube.com/watch?v=nqHylLP2NmA&t=811s "Youtube")
 
-1. Tạo 1 layer mới:
+## 1. Tạo 1 layer mới:
 - 💻 *yocto$* `source poky/oe-init-build-env`
 - 💻 *yocto/build$* `cd ../`
 - 💻 *yocto$* `bitbake-layers create-layer meta-yocto-live`
@@ -22,7 +22,7 @@ Link video [#02 simple layer, custom image and devtool](https://www.youtube.com/
 - 💻 *yocto$* `bitbake core-image-minimal`
   - 📌 Sau khi chạy lệnh ở trên hãy để ý dòng **meta-yocto-live = "\<unknown>:\<unknown>"**
 
-2. Đẩy **meta-yocto-live** lên github:
+## 2. Đẩy **meta-yocto-live** lên github:
 - 💻 *yocto$* `cd meta-yocto-live`
 - 💻 *yocto/meta-yocto-live$* `git init`
 - 💻 *yocto/meta-yocto-live$* `git add .`
@@ -37,7 +37,7 @@ Link video [#02 simple layer, custom image and devtool](https://www.youtube.com/
   - 📌 Sau khi chạy lệnh ở trên hãy để ý dòng **meta-yocto-live = "yocto-2.6.4:ca9c344696d5b77a962acfceab34cc2d070ced2a"**
   - 📌 Đó là sự khác biệt sau khi add git
 
-3. Tạo custom image
+## 3. Tạo custom image
 - 💻 *yocto$* `mkdir -p meta-yocto-live/recipes-core/images`
 - 💻 *yocto$* `cp poky/meta/recipes-core/images/core-image-minimal-dev.bb meta-yocto-live/recipes-core/images/core-image-live.bb`
 - 💻 *yocto$* `vim meta-yocto-live/recipes-core/images/core-image-live.bb`
@@ -55,7 +55,7 @@ Link video [#02 simple layer, custom image and devtool](https://www.youtube.com/
 - 💻 *root@qemuarm:~#* `bc`
   - 📌 Sẽ hiện thông tin gói bc đã thêm trong file `core-image-live`
 
-4. Tạo recipes mẫu:
+## 4. Tạo recipes mẫu:
 - Tạo thư mục **recipes-hello** có cấu trúc như bên dưới:
     ```
     meta-yocto-live
@@ -68,52 +68,17 @@ Link video [#02 simple layer, custom image and devtool](https://www.youtube.com/
             │   └── hello.c
             └── hello_0.1.bb
     ```
-- File **hello.c** như sau:
-    ```C
-    #include <stdio.h>
-
-    int main(int argc, char **argv)
-    {
-        printf("Hello word, this is \"%s\"\n", argv[0]);
-
-        return 0;
-    }
-    ```
-- File **hello_0.1.bb** như sau:
-    ```C
-    SUMMARY = "bitbake-layers recipe"
-    DESCRIPTION = "Recipe created by bitbake-layers"
-    LICENSE = "MIT"
-    LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
-    TARGET_CC_ARCH += "${LDFLAGS}"
-    SRC_URI = "file://hello.c"
-
-    S = "${WORKDIR}"
-
-    do_compile() {
-            ${CC} hello.c -o hello
-    }
-
-    do_install() {
-            install -d ${D}${bindir}
-            install -m 0755 hello ${D}${bindir}
-    }
-
-    python do_build() {
-        bb.plain("***********************************************");
-        bb.plain("*                                             *");
-        bb.plain("*  Example recipe created by bitbake-layers   *");
-        bb.plain("*                                             *");
-        bb.plain("***********************************************");
-    }
-
-    ```
+- File **hello.c** xem ở đây: [hello.c](https://github.com/thanhduongvs/meta-yocto-live/blob/yocto-2.6.4/recipes-hello/hello/hello-0.1/hello.c "Github")
+- File **hello_0.1.bb** xem ở đây: [hello_0.1.bb](https://github.com/thanhduongvs/meta-yocto-live/blob/yocto-2.6.4/recipes-hello/hello/hello_0.1.bb "Github")
 - 💻 *yocto$* `vim meta-yocto-live/recipes-core/images/core-image-live.bb`
   - 📌 Thêm dòng **IMAGE_INSTALL += " hello"** ở cuối. Để thêm *recipes-hello* vừa tạo vào *core-image-live*
 - 💻 *yocto/poky/build$* `bitbake hello`
 - 💻 *yocto/poky/build$* `bitbake core-image-live`
+- 💻 *yocto/build$* `runqemu qemuarm core-image-live nographic`
+- 💻 *root@qemuarm:~#* `hello` 
+  - 📌 Để chạy ví dụ hello vừa build
 
-5. Tạo recipes mẫu khi image bắt đầu:
+## 5. Tạo recipes mẫu khi image bắt đầu:
 - Tạo thư mục **recipes-hello-start** có cấu trúc như bên dưới:
     ```
     meta-yocto-live
@@ -123,47 +88,58 @@ Link video [#02 simple layer, custom image and devtool](https://www.youtube.com/
         │   └── hello-start-script
         └── hello-start_0.1.bb
     ```
-- File **hello.c** như sau:
-    ```C
-    #include <stdio.h>
-
-    int main(int argc, char **argv)
-    {
-        printf("Hello word, this is \"%s\"\n", argv[0]);
-
-        return 0;
-    }
-    ```
-- File **hello_0.1.bb** như sau:
-    ```C
-    SUMMARY = "bitbake-layers recipe"
-    DESCRIPTION = "Recipe created by bitbake-layers"
-    LICENSE = "MIT"
-    LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
-    TARGET_CC_ARCH += "${LDFLAGS}"
-    SRC_URI = "file://hello.c"
-
-    S = "${WORKDIR}"
-
-    do_compile() {
-            ${CC} hello.c -o hello
-    }
-
-    do_install() {
-            install -d ${D}${bindir}
-            install -m 0755 hello ${D}${bindir}
-    }
-
-    python do_build() {
-        bb.plain("***********************************************");
-        bb.plain("*                                             *");
-        bb.plain("*  Example recipe created by bitbake-layers   *");
-        bb.plain("*                                             *");
-        bb.plain("***********************************************");
-    }
-
-    ```
+- File **hello-start.c** xem ở đây: [hello-start.c](https://github.com/thanhduongvs/meta-yocto-live/blob/yocto-2.6.4/recipes-hello-start/hello-start/hello-start-0.1/hello-start.c "Github")
+- File **hello-start-script** xem ở đây: [hello-start-script](https://github.com/thanhduongvs/meta-yocto-live/blob/yocto-2.6.4/recipes-hello-start/hello-start/hello-start-0.1/hello-start-script "Github")
+- File **hello-start_0.1.bb** xem ở đây: [hello-start_0.1.bb](https://github.com/thanhduongvs/meta-yocto-live/blob/yocto-2.6.4/recipes-hello-start/hello-start/hello-start_0.1.bb "Github")
 - 💻 *yocto$* `vim meta-yocto-live/recipes-core/images/core-image-live.bb`
-  - 📌 Thêm dòng **IMAGE_INSTALL += " hello"** ở cuối. Để thêm *recipes-hello* vừa tạo vào *core-image-live*
-- 💻 *yocto/poky/build$* `bitbake hello`
+  - 📌 Thêm dòng **IMAGE_INSTALL += " hello-start"** ở cuối
+- 💻 *yocto/poky/build$* `bitbake hello-start`
 - 💻 *yocto/poky/build$* `bitbake core-image-live`
+- 💻 *yocto/build$* `runqemu qemuarm core-image-live`
+- 📌 Khi khởi động xong trước khi gõ `root` để đăng nhập, hello-start sẽ được chạy
+
+## 6. Tạo recipes với patch file:
+- Tạo thư mục **recipes-hello-patch** có cấu trúc như bên dưới:
+    ```
+    recipes-hello-patch
+    └── hello-patch
+        ├── after
+        │   └── hello-patch.c
+        ├── before
+        │   └── hello-patch.c
+        ├── hello-patch-0.1
+        │   ├── 0001-hello.patch
+        │   └── hello-patch.c
+        └── hello-patch_0.1.bb
+    ```
+- File **0001-hello.patch** xe được tạo sau, không nên tạo trước
+- File **hello-patch.c** xem ở đây: [hello-patch.c](https://github.com/thanhduongvs/meta-yocto-live/blob/yocto-2.6.4/recipes-hello-patch/hello-patch/hello-patch-0.1/hello-patch.c "Github")
+  - 📌 Cả 3 file hello-patch.c giống nhau
+- File **hello-patch_0.1.bb** xem ở đây: [hello-patch_0.1.bb](https://github.com/thanhduongvs/meta-yocto-live/blob/yocto-2.6.4/recipes-hello-patch/hello-patch/hello-patch_0.1.bb "Github")
+- Mở file **after/hello-patch.c** đổi dòng `printf("Hello word!\n");` thành `printf("Hello Van Son!\n");`
+  - 📌 Xem kết quả ở đây ở đây: [hello-patch_0.1.bb](https://github.com/thanhduongvs/meta-yocto-live/blob/yocto-2.6.4/recipes-hello-patch/hello-patch/after/hello-patch.c "Github")
+- 💻 *yocto/meta-yocto-live/recipes-hello-patch/hello-patch$* `diff -rupN before/hello-patch.c after/hello-patch.c > 0001-hello.patch`
+  - 📌 Kết quả sẽ tạo file `0001-hello.patch`
+  - 📌 Copy file `0001-hello.patch` vào thư mục `hello-patch-0.1`
+- 💻 *yocto$* `vim meta-yocto-live/recipes-core/images/core-image-live.bb`
+  - 📌 Thêm dòng **IMAGE_INSTALL += " hello-patch"** ở cuối
+- 💻 *yocto/poky/build$* `bitbake hello-patch`
+- 💻 *yocto/poky/build$* `bitbake core-image-live`
+- 💻 *yocto/build$* `runqemu qemuarm core-image-live`
+- 💻 *root@qemuarm:~#* `hello-patch`
+  - 📌 Sau khi lệnh thực thi sẽ in ra dòng **Hello Van Son!** chứ không phải **Hello word!**
+
+## 7. Dùng devtool
+- 💻 *yocto$* `devtool create-workspace meta-yocto-live/recipes-devtool`
+  - 📌 Tạo workspace cho devtool nằm ở thư mục recipes-devtool
+  - 📌 Nếu không dungf lệnh này mặc định devtool sẽ nằm ở thư mục yocto/build
+- 💻 *yocto$* `devtool add https://github.com/LetoThe2nd/this_is.git`
+  - 📌 devtool sẽ tạo recipes this-is ở đây `yocto/meta-yocto-live/recipes-devtool/recipes/this-is`
+  - 📌 Try cập vào https://github.com/LetoThe2nd/this_is ta thấy có rất nhiều file, nhưng trong **recipes-devtool/recipes/this-is** chỉ có 1 file **this-is_git.bb**
+  - 📌 Hiểu đơn giản thì devtool sẽ làm đơn giản hóa công việc của người code thay vì get suorce về
+- 💻 *yocto$* `vim meta-yocto-live/recipes-core/images/core-image-live.bb`
+  - 📌 Thêm dòng **IMAGE_INSTALL += " this-is"** ở cuối
+- 💻 *yocto/poky/build$* `bitbake this-is`
+- 💻 *yocto/poky/build$* `bitbake core-image-live`
+- 💻 *yocto/build$* `runqemu qemuarm core-image-live`
+- 💻 *root@qemuarm:~#* `this_is`
