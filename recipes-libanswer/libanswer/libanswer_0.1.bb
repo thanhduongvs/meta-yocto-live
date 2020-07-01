@@ -21,6 +21,9 @@ RDEPENDS_${PN} = "bc"
 inherit cmake
 
 PACKAGES =+ "${PN}-example"
+FILE_${PN}-example =+ " \
+    /usr/bin/ask \
+"
 
 # Specify any options you want to pass to cmake using EXTRA_OECMAKE:
 EXTRA_OECMAKE = ""

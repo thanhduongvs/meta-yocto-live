@@ -1,5 +1,6 @@
 # Live Coding with Yocto Project #03 package dependencies and splitting
 
+Link video [#03 package dependencies and splitting](https://www.youtube.com/watch?v=IehnEC3GOGU "Youtube")
 
 - 💻 *yocto$* `source poky/oe-init-build-env`
 - 💻 *yocto/build$* `cd ../`
@@ -53,14 +54,3 @@
 - Đến lúc này ta cần phân biệt **DEPENDS** và **RDEPENDS**
   - **DEPENDS**: Build time package dependencies. Những gói package cần thiết cho việc build như ví dụ trên là *"boost"*
   - **RDEPENDS**: Run time package dependencies. Những gói package cần thiết cho việc run như ví dụ trên là *"bc"*
-## Recipe filename rules
-
-- Định dạng tên của recipe là: **\<package-name>_\<package-version>.bb**
-  - example_1.0.bb
-  - my-recipe-long-name_1.2.0.bb
-  - example_git.bb
-
-#PACKAGES =+ "${PN}-example"
-FILE_${PN}-example =+ " \
-    /usr/bin/ask \
-"

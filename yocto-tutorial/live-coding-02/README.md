@@ -1,6 +1,6 @@
 # Live Coding with Yocto Project #02 simple layer, custom image and devtool
 
-Link video [#02 simple layer, custom image and devtool](https://www.youtube.com/watch?v=nqHylLP2NmA&t=811s "Youtube")
+Link video [#02 simple layer, custom image and devtool](https://www.youtube.com/watch?v=nqHylLP2NmA "Youtube")
 
 ## 1. Tạo 1 layer mới:
 - 💻 *yocto$* `source poky/oe-init-build-env`
